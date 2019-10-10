@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Журнал местных командировок</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script type='text/javascript' src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type='text/javascript' src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+<div class="container">
+    <table id="entryTable">
+        <tr>
+            <thead class="thead-dark">
+            <th scope="col">№</th>
+            <th scope="col">ФИО работника</th>
+            <th scope="col">Дата</th>
+            <th scope="col">Время выезда</th>
+            <th scope="col">Время возвращения</th>
+            <th scope="col">Место командирования</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${entries}">
+                <td><span th:text="${entry.idEntry}"></span></td>
+                <td><span th:text="${entry.fio}"></span></td>
+                <td><span th:text="${entry.dateOfAbsence}"></span></td>
+                <td><span th:text="${entry.startTime}"></span></td>
+                <td><span th:text="${entry.endTime}"></span></td>
+                <td><span th:text="${entry.placeOrCause}"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-danger" >Удалить</button>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modalSave">Добавить</button>
+</div>
+</body>
+
+<div class="modal fade" id="modalSave" tabindex="-1" role="dialog" aria-labelledby="modalSaveTitle" aria-hidden="true" >
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h5 class="modal-title">Добавление записи в журнал</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="add">
+                <div class="modal-body">
+                    <code><input type="text" id=fio></code>
+                    <code><input type="text" id=dateOfAbsence></code>
+                    <code><input type="text" id=startTime></code>
+                    <code><input type="text" id=endTime></code>
+                    <code><input type="text" id=placeOrCause></code>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn" name="saveBtn">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</html>
