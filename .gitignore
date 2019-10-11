@@ -1,0 +1,6 @@
+
+# Ignore (generated) html files,
+*.iml
+# Ignore objects and archives.
+*.[oa]
+*.idea/

@@ -2,17 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b243c33-27d2-41f4-8281-f2011f645b71" name="Default" comment="234">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/journal.iml" beforeDir="false" afterPath="$PROJECT_DIR$/journal.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/journal.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/journal.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/pgk/journal/Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pgk/journal/Application.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pgk/journal/controllers/JournalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pgk/journal/controllers/JournalController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pgk/journal/entity/Entry.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pgk/journal/entity/Entry.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pgk/journal/repository/EntryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pgk/journal/repository/EntryRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/journal.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/journal.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -231,6 +229,7 @@
       <workItem from="1570715835518" duration="417000" />
       <workItem from="1570716314725" duration="531000" />
       <workItem from="1570721241378" duration="1675000" />
+      <workItem from="1570755512001" duration="3484000" />
     </task>
     <servers />
   </component>
