@@ -2,10 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9b243c33-27d2-41f4-8281-f2011f645b71" name="Default" comment="234">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/pgk/journal/controllers/JournalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/pgk/journal/controllers/JournalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/journal.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/journal.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pgk/journal/Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pgk/journal/Application.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pgk/journal/controllers/JournalController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pgk/journal/controllers/JournalController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/pgk/journal/entity/Entry.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/pgk/journal/entity/Entry.class" afterDir="false" />
@@ -38,8 +40,15 @@
   <component name="JsFlowSettings">
     <service-enabled>false</service-enabled>
     <exe-path />
-    <annotation-enable>false</annotation-enable>
     <other-services-enabled>false</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
   </component>
   <component name="ProjectId" id="1RuqdPsRU4cjpRhGYLyd2wJEv5L" />
   <component name="PropertiesComponent">
@@ -51,20 +60,23 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/lib" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/resources/js" />
-      <recent name="$PROJECT_DIR$/src/main/resources/css" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/resources/webapp/WEB-INF/jsp" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\IdeaProjects\journal\src\main\resources\lib" />
+      <recent name="C:\IdeaProjects\journal\src\main\resources\css" />
+      <recent name="$PROJECT_DIR$/src/main/resources/js" />
+      <recent name="$PROJECT_DIR$/src/main/resources/css" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -230,6 +242,7 @@
       <workItem from="1570716314725" duration="531000" />
       <workItem from="1570721241378" duration="1675000" />
       <workItem from="1570755512001" duration="3484000" />
+      <workItem from="1570947951792" duration="24177000" />
     </task>
     <servers />
   </component>

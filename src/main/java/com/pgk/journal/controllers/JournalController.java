@@ -21,8 +21,8 @@ public class JournalController {
         return "journal";
     }
 
-    @RequestMapping(path = "/add")
-    public @ResponseBody String addEntry (@RequestParam String fio,
+    @RequestMapping(path = "/saveEntry")
+    public @ResponseBody String saveEntry (@RequestParam String fio,
                                           @RequestParam String dateOfAbsence,
                                           @RequestParam String startTime,
                                           @RequestParam String endTime,
@@ -31,9 +31,8 @@ public class JournalController {
         Entry entry = new Entry(fio, dateOfAbsence, startTime, endTime, placeOrCause);
 
         entryRepository.save(entry);
+        Iterable<Entry> entries = entryRepository.findAll();
 
-        return "Сохранено";
-
+        return "entries :: entries";
     }
-
 }
