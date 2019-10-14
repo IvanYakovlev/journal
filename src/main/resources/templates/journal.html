@@ -3,21 +3,31 @@
 <head>
     <title>Журнал местных командировок</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <!--bootstrap-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!--datepicker-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+    <!--timepicker-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.css">
 </head>
 
 <body>
-<nav class="nav justify-content-center">
-    <a class="nav-link active" href="#">Active</a>
-    <a class="nav-link" href="#">Link</a>
-    <a class="nav-link" href="#">Link</a>
-    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-</nav>
+
 <div class="container">
-    <table id="entryTable">
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <button class="btn btn-outline-primary" onclick="showSaveModal()">Добавить запись</button>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+        </li>
+    </ul>
+    <table id="entryTable" class="table table-hover">
         <tr>
             <thead class="thead-dark">
             <th scope="col">№</th>
@@ -28,7 +38,7 @@
             <th scope="col">Место командирования</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody >
             <tr th:each="entry : ${entries}" ondblclick="editEntry()">
                 <td><span th:text="${entry.idEntry}"></span></td>
                 <td><span th:text="${entry.fio}"></span></td>
@@ -39,8 +49,25 @@
             </tr>
         </tbody>
     </table>
-    <button class="btn btn-danger" >Удалить</button>
-    <button class="btn btn-primary" onclick="showSaveModal()">Добавить</button>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>
 </body>
 
@@ -55,15 +82,16 @@
             </div>
             <form action="add">
                 <div class="modal-body">
-                    <code><input type="text" id=fio></code>
-                    <code><input type="text" id=dateOfAbsence></code>
-                    <code><input type="text" id=startTime></code>
-                    <code><input type="text" id=endTime></code>
-                    <code><input type="text" id=placeOrCause></code>
+                    <input style="width: 30%" type="text" id=fio placeholder="ФИО">
+                    <input style="width: 10%" type="text" id="dateOfAbsence" placeholder="дата" readonly>
+                    <input style="width: 8%" type="text" id="startTime" value="" placeholder="с" readonly>
+                    <input style="width: 8%" type="text" id="endTime" value="" placeholder="до" readonly>
+                    <input style="width: 42%" type="text" id=placeOrCause placeholder="Место/Причина">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeSaveModal()">Отменить</button>
+                    <button class="btn btn-danger" >Удалить</button>
                     <button type="button" class="btn btn-primary" id="saveBtn" name="saveBtn" onclick="saveEntry()">Сохранить</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeSaveModal()">Отменить</button>
                 </div>
             </form>
         </div>
@@ -96,5 +124,24 @@
         $('#modalSave').modal('show');
 
     }
+
+    $('#startTime').clockpicker({
+        placement: 'bottom',
+        align: 'right',
+        autoclose: true,
+        'default': '09:00'
+    });
+    $('#endTime').clockpicker({
+        placement: 'bottom',
+        align: 'right',
+        autoclose: true,
+        'default': '09:00'
+    });
+    $('#dateOfAbsence').datetimepicker({
+        timepicker:false,
+        format:'Y-m-d'
+    });
+    $.datetimepicker.setLocale('ru');
+
 </script>
 </html>
