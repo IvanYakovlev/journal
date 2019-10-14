@@ -14,29 +14,61 @@
     <!--timepicker-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clockpicker/0.0.7/bootstrap-clockpicker.min.css">
+    <!--datatables-->
+   <!-- <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>-->
+
 </head>
 
 <body>
-
+<br>
 <div class="container">
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <button class="btn btn-outline-primary" onclick="showSaveModal()">Добавить запись</button>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-        </li>
-    </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="btn btn-outline-primary" onclick="showSaveModal()">Добавить запись</button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       задать интервал
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a>
+                            <div class="container">
+                                c:
+                            </div>
+                            <div class="container">
+                                <input  type="text" id="startDate"  readonly class="dateTimePicker">
+                            </div>
+                        </a>
+                        <a>
+                            <div class="container">
+                                 по:
+                            </div>
+                            <div class="container">
+                                <input  type="text" id="endDate" readonly class="dateTimePicker">
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Поиск по ФИО" aria-label="Search">
+            </form>
+        </div>
+    </nav>
     <table id="entryTable" class="table table-hover">
-        <tr>
-            <thead class="thead-dark">
-            <th scope="col">№</th>
-            <th scope="col">ФИО работника</th>
-            <th scope="col">Дата</th>
-            <th scope="col">Время выезда</th>
-            <th scope="col">Время возвращения</th>
-            <th scope="col">Место командирования</th>
-        </tr>
+        <caption>
+            Журнал местных командировок
+        </caption>
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col">ФИО работника</th>
+                <th scope="col">&nbsp&nbsp&nbsp&nbsp&nbsp&nbspДата&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+                <th scope="col">Время выезда</th>
+                <th scope="col">Время возвращения</th>
+                <th scope="col">Место командирования</th>
+            </tr>
         </thead>
         <tbody >
             <tr th:each="entry : ${entries}" ondblclick="editEntry()">
@@ -83,7 +115,7 @@
             <form action="add">
                 <div class="modal-body">
                     <input style="width: 30%" type="text" id=fio placeholder="ФИО">
-                    <input style="width: 10%" type="text" id="dateOfAbsence" placeholder="дата" readonly>
+                    <input style="width: 10%" type="text" id="dateOfAbsence" placeholder="дата" readonly class="dateTimePicker">
                     <input style="width: 8%" type="text" id="startTime" value="" placeholder="с" readonly>
                     <input style="width: 8%" type="text" id="endTime" value="" placeholder="до" readonly>
                     <input style="width: 42%" type="text" id=placeOrCause placeholder="Место/Причина">
@@ -137,11 +169,12 @@
         autoclose: true,
         'default': '09:00'
     });
-    $('#dateOfAbsence').datetimepicker({
+    $('.dateTimePicker').datetimepicker({
         timepicker:false,
         format:'Y-m-d'
     });
     $.datetimepicker.setLocale('ru');
 
+/*    $('#entryTable').dataTable();*/
 </script>
 </html>
