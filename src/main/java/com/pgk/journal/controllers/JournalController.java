@@ -1,8 +1,11 @@
 package com.pgk.journal.controllers;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pgk.journal.entity.Entry;
 import com.pgk.journal.repository.EntryRepository;
+import com.pgk.journal.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,27 +15,36 @@ import org.springframework.web.bind.annotation.*;
 public class JournalController {
 
     @Autowired
-    private EntryRepository entryRepository;
+    private EntryService entryService;
 
     @GetMapping
-    public String allEntry(Model model) {
-        Iterable<Entry> entries = entryRepository.findAll();
-        model.addAttribute( "entries",entries);
+    public String allEntry() {
         return "journal";
     }
 
     @RequestMapping(path = "/saveEntry")
-    public @ResponseBody String saveEntry (@RequestParam String fio,
+    public @ResponseBody String saveEntry (@RequestParam Long idEntry,
+                                           @RequestParam String fio,
                                           @RequestParam String dateOfAbsence,
                                           @RequestParam String startTime,
                                           @RequestParam String endTime,
                                           @RequestParam String placeOrCause){
-
-        Entry entry = new Entry(fio, dateOfAbsence, startTime, endTime, placeOrCause);
-
-        entryRepository.save(entry);
-        Iterable<Entry> entries = entryRepository.findAll();
-
-        return "entries :: entries";
+        entryService.saveEntry( idEntry, fio, dateOfAbsence, startTime, endTime, placeOrCause);
+        return null;
     }
+
+    @RequestMapping(path = "/deleteEntry")
+    public @ResponseBody String deleteEntry (@RequestParam Long idEntry){
+        entryService.deleteEntryById(idEntry);
+        return null;
+    }
+
+    @RequestMapping(path = "/loadEntry")
+    public @ResponseBody String loadEntry (@RequestParam String fioSearch,
+                                           @RequestParam String startDate,
+                                           @RequestParam String endDate){
+        return entryService.getJsonEntryList(fioSearch,startDate,endDate);
+    }
+
+
 }

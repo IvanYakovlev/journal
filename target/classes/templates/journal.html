@@ -23,7 +23,7 @@
 <body>
 <br>
 <div class="container">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <button class="btn btn-outline-primary" onclick="showSaveModal()">Добавить запись</button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
@@ -51,9 +51,9 @@
                     </div>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Поиск по ФИО" aria-label="Search">
-            </form>
+            <div  class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" id="search" placeholder="Поиск" aria-label="Search">
+            </div>
         </div>
     </nav>
     <table id="entryTable" class="table table-hover">
@@ -70,15 +70,7 @@
                 <th scope="col">Место командирования</th>
             </tr>
         </thead>
-        <tbody >
-            <tr th:each="entry : ${entries}" ondblclick="editEntry()">
-                <td><span th:text="${entry.idEntry}"></span></td>
-                <td><span th:text="${entry.fio}"></span></td>
-                <td><span th:text="${entry.dateOfAbsence}"></span></td>
-                <td><span th:text="${entry.startTime}"></span></td>
-                <td><span th:text="${entry.endTime}"></span></td>
-                <td><span th:text="${entry.placeOrCause}"></span></td>
-            </tr>
+        <tbody id="tBodyData">
         </tbody>
     </table>
     <nav aria-label="Page navigation example">
@@ -112,25 +104,25 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="add">
                 <div class="modal-body">
-                    <input style="width: 30%" type="text" id=fio placeholder="ФИО">
+                    <input style="width: 30%" type="text" id=fio placeholder="ФИО" maxlength="100">
                     <input style="width: 10%" type="text" id="dateOfAbsence" placeholder="дата" readonly class="dateTimePicker">
                     <input style="width: 8%" type="text" id="startTime" value="" placeholder="с" readonly>
                     <input style="width: 8%" type="text" id="endTime" value="" placeholder="до" readonly>
-                    <input style="width: 42%" type="text" id=placeOrCause placeholder="Место/Причина">
+                    <input style="width: 42%" type="text" id=placeOrCause placeholder="Место/Причина" maxlength="100">
+                    <input hidden id=idEntry>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" >Удалить</button>
+                    <button class="btn btn-danger" onclick="deleteEntry()">Удалить</button>
                     <button type="button" class="btn btn-primary" id="saveBtn" name="saveBtn" onclick="saveEntry()">Сохранить</button>
                     <button type="button" class="btn btn-secondary" onclick="closeSaveModal()">Отменить</button>
                 </div>
-            </form>
         </div>
     </div>
 </div>
 <script>
-    function showSaveModal() {
+     function showSaveModal() {
+         clearEntryModal();
         $('#modalSave').modal('show');
     }
     function closeSaveModal() {
@@ -141,21 +133,44 @@
         $.post(
             "/saveEntry",
             {
+                idEntry: $('#idEntry').val(),
                 fio: $('#fio').val(),
                 dateOfAbsence: $('#dateOfAbsence').val(),
                 startTime: $('#startTime').val(),
                 endTime: $('#endTime').val(),
                 placeOrCause: $('#placeOrCause').val()
             },
-            function (data) {
+            function () {
+                loadTableData();
                 $('#modalSave').modal('hide');
             }
         );
     }
-    function editEntry() {
+    function editEntry(idEntry, fio, dateOfAbsence, startTime, endTime, placeOrCause) {
+
+        $('#idEntry').val(idEntry);
+        $('#fio').val(fio);
+        $('#dateOfAbsence').val(dateOfAbsence);
+        $('#startTime').val(startTime);
+        $('#endTime').val(endTime);
+        $('#placeOrCause').val(placeOrCause);
+
         $('#modalSave').modal('show');
 
     }
+     function deleteEntry() {
+
+         $.post(
+             "/deleteEntry",
+             {
+                 idEntry: $('#idEntry').val()
+             },
+             function () {
+                 loadTableData();
+                 $('#modalSave').modal('hide');
+             }
+         );
+     }
 
     $('#startTime').clockpicker({
         placement: 'bottom',
@@ -176,5 +191,56 @@
     $.datetimepicker.setLocale('ru');
 
 /*    $('#entryTable').dataTable();*/
+
+    function loadTableData() {
+        $.post(
+            "/loadEntry",
+            {
+                fioSearch: "",
+                startDate: "",
+                endDate: ""
+            },
+            function (jsonData) {
+                var entryList= JSON.parse(jsonData);
+                var entryHtml="";
+                entryList.forEach(function (entry) {
+                    entryHtml+=
+                        '<tr ondblclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeOrCause+'\')">'+
+                            '<td>'+entry.idEntry+'</td>'+
+                            '<td>'+entry.fio+'</td>'+
+                            '<td>'+entry.dateOfAbsence+'</td>'+
+                            '<td>'+entry.startTime+'</td>'+
+                            '<td>'+entry.endTime+'</td>'+
+                            '<td>'+entry.placeOrCause+'</td>'+
+                        '</tr>';
+                });
+                console.log(entryHtml);
+                $('#entryTable tbody').html(entryHtml);
+            }
+        );
+    }
+    function clearEntryModal() {
+        $('#idEntry').val('');
+        $('#fio').val('');
+        $('#dateOfAbsence').val('');
+        $('#startTime').val('');
+        $('#endTime').val('');
+        $('#placeOrCause').val('');
+
+    }
+     $(document).ready(function(){
+         $("#search").keyup(function(){
+             _this = this;
+
+             $.each($("#entryTable tbody tr"), function() {
+                 if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1) {
+                     $(this).hide();
+                 } else {
+                     $(this).show();
+                 }});
+         });
+     });
+
+    loadTableData();
 </script>
 </html>

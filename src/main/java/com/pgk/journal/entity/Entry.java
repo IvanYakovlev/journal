@@ -9,7 +9,7 @@ public class Entry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Integer idEntry;
+    private Long idEntry;
 
     @Column(name = "FIO")
     private String fio;
@@ -29,7 +29,8 @@ public class Entry {
     public Entry() {
     }
 
-    public Entry(String fio, String dateOfAbsence, String startTime, String endTime, String placeOrCause) {
+    public Entry(Long idEntry, String fio, String dateOfAbsence, String startTime, String endTime, String placeOrCause) {
+        this.idEntry = idEntry;
         this.fio = fio;
         this.dateOfAbsence = dateOfAbsence;
         this.startTime = startTime;
@@ -37,11 +38,11 @@ public class Entry {
         this.placeOrCause = placeOrCause;
     }
 
-    public Integer getIdEntry() {
+    public Long getIdEntry() {
         return idEntry;
     }
 
-    public void setIdEntry(Integer idEntry) {
+    public void setIdEntry(Long idEntry) {
         this.idEntry = idEntry;
     }
 
