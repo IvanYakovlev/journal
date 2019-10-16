@@ -28,8 +28,8 @@ public class JournalController {
                                           @RequestParam String dateOfAbsence,
                                           @RequestParam String startTime,
                                           @RequestParam String endTime,
-                                          @RequestParam String placeOrCause){
-        entryService.saveEntry( idEntry, fio, dateOfAbsence, startTime, endTime, placeOrCause);
+                                          @RequestParam String placeCause){
+        entryService.saveEntry( idEntry, fio, dateOfAbsence, startTime, endTime, placeCause);
         return null;
     }
 
@@ -40,10 +40,11 @@ public class JournalController {
     }
 
     @RequestMapping(path = "/loadEntry")
-    public @ResponseBody String loadEntry (@RequestParam String fioSearch,
+    public @ResponseBody String loadEntry (@RequestParam String searchText,
                                            @RequestParam String startDate,
-                                           @RequestParam String endDate){
-        return entryService.getJsonEntryList(fioSearch,startDate,endDate);
+                                           @RequestParam String endDate,
+                                           @RequestParam Integer page){
+        return entryService.getJsonEntryList(searchText,startDate,endDate, page==null?0:page);
     }
 
 

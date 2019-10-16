@@ -24,18 +24,18 @@ public class Entry {
     private String endTime;
 
     @Column(name = "PLACE_OR_CAUSE")
-    private String placeOrCause;
+    private String placeCause;
 
     public Entry() {
     }
 
-    public Entry(Long idEntry, String fio, String dateOfAbsence, String startTime, String endTime, String placeOrCause) {
+    public Entry(Long idEntry, String fio, String dateOfAbsence, String startTime, String endTime, String placeCause) {
         this.idEntry = idEntry;
         this.fio = fio;
         this.dateOfAbsence = dateOfAbsence;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.placeOrCause = placeOrCause;
+        this.placeCause = placeCause;
     }
 
     public Long getIdEntry() {
@@ -78,11 +78,11 @@ public class Entry {
         this.endTime = endTime;
     }
 
-    public String getPlaceOrCause() {
-        return placeOrCause;
+    public String getPlaceCause() {
+        return placeCause;
     }
 
-    public void setPlaceOrCause(String placeOrCause) {
-        this.placeOrCause = placeOrCause;
+    public void setPlaceCause(String placeCause) {
+        this.placeCause = placeCause;
     }
 }

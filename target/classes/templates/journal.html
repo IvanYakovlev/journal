@@ -71,22 +71,8 @@
         </tbody>
     </table>
     <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                    <span class="sr-only">Previous</span>
-                </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </li>
+        <ul class="pagination" id="navPages">
+
         </ul>
     </nav>
 </div>
@@ -106,7 +92,7 @@
                     <input style="width: 10%" type="text" id="dateOfAbsence" placeholder="дата" readonly class="dateTimePicker">
                     <input style="width: 8%" type="text" id="startTime" value="" placeholder="с" readonly>
                     <input style="width: 8%" type="text" id="endTime" value="" placeholder="до" readonly>
-                    <input style="width: 42%" type="text" id=placeOrCause placeholder="Место/Причина" maxlength="100">
+                    <input style="width: 42%" type="text" id=placeCause placeholder="Место/Причина" maxlength="100">
                     <input hidden id=idEntry>
                 </div>
                 <div class="modal-footer">
@@ -150,22 +136,22 @@
                      dateOfAbsence: $('#dateOfAbsence').val(),
                      startTime: $('#startTime').val(),
                      endTime: $('#endTime').val(),
-                     placeOrCause: $('#placeOrCause').val()
+                     placeCause: $('#placeCause').val()
                  },
                  function () {
-                     loadTableData();
+                     loadTableData(0);
                      closeSaveModal();
                  }
              );
          }
     }
-    function editEntry(idEntry, fio, dateOfAbsence, startTime, endTime, placeOrCause) {
+    function editEntry(idEntry, fio, dateOfAbsence, startTime, endTime, placeCause) {
             $('#idEntry').val(idEntry);
             $('#fio').val(fio);
             $('#dateOfAbsence').val(dateOfAbsence);
             $('#startTime').val(startTime);
             $('#endTime').val(endTime);
-            $('#placeOrCause').val(placeOrCause);
+            $('#placeCause').val(placeCause);
             showSaveModal(false);
     }
      function deleteEntry() {
@@ -176,7 +162,7 @@
                  idEntry: $('#idEntry').val()
              },
              function () {
-                 loadTableData();
+                 loadTableData(0);
                  closeSaveModal();
              }
          );
@@ -200,29 +186,56 @@
     });
     $.datetimepicker.setLocale('ru');
 
-    function loadTableData() {
+    function loadTableData(page) {
+        if ($('#endDate').val()<$('#startDate').val()){
+            $('#endDate').val($('#startDate').val())
+        }
+
         $.post(
             "/loadEntry",
             {
-                fioSearch: "",
-                startDate: "",
-                endDate: ""
+                searchText: $('#search').val(),
+                startDate: $('#startDate').val(),
+                endDate: $('#endDate').val(),
+                page: page
             },
             function (jsonData) {
                 var entryList= JSON.parse(jsonData);
                 var entryHtml="";
-                entryList.forEach(function (entry) {
+                var navPagesHtml="";
+                entryList.content.forEach(function (entry) {
                     entryHtml+=
-                        '<tr ondblclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeOrCause+'\')">'+
+                        '<tr ondblclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeCause+'\')">'+
                             '<td>'+entry.idEntry+'</td>'+
                             '<td>'+entry.fio+'</td>'+
                             '<td>'+entry.dateOfAbsence+'</td>'+
                             '<td>'+entry.startTime+'</td>'+
                             '<td>'+entry.endTime+'</td>'+
-                            '<td>'+entry.placeOrCause+'</td>'+
+                            '<td>'+entry.placeCause+'</td>'+
                         '</tr>';
                 });
                 $('#entryTable tbody').html(entryHtml);
+                var hideNav = entryList.totalPages==0?'hidden':'';
+                navPagesHtml+=
+                '<li class="page-item" '+hideNav+'>\n' +
+                '    <a class="page-link" href="#" onclick="loadTableData('+((entryList.number-1)>=0?(entryList.number-1):0)+')" aria-label="Previous">\n' +
+                '        <span aria-hidden="true">&laquo;</span>\n' +
+                '        <span class="sr-only">Previous</span>\n' +
+                '    </a>\n' +
+                '</li>\n';
+                for (var i=0;i<entryList.totalPages;i++){
+                    var active = entryList.number==i?'active':'';
+                    var hidden =((entryList.number-3>i&&i!=0)||(entryList.number+3<i)&&i!=entryList.totalPages-1)?'hidden':'';
+                    navPagesHtml+= '<li class="page-item '+active+'" '+hidden+'><a class="page-link"    href="#" onclick="loadTableData('+i+')">'+(i+1)+'</a></li>\n';
+                }
+                navPagesHtml+=
+                '<li class="page-item" '+hideNav+'>\n' +
+                '    <a class="page-link" href="#" onclick="loadTableData('+((entryList.number+1)>=entryList.totalPages-1?(entryList.totalPages-1):(entryList.number+1))+')" aria-label="Next">\n' +
+                '        <span aria-hidden="true">&raquo;</span>\n' +
+                '        <span class="sr-only">Next</span>\n' +
+                '    </a>\n' +
+                '</li>';
+                $('#navPages').html(navPagesHtml);
             }
         );
     }
@@ -232,7 +245,7 @@
         $('#dateOfAbsence').val('');
         $('#startTime').val('');
         $('#endTime').val('');
-        $('#placeOrCause').val('');
+        $('#placeCause').val('');
 
     }
     function validate(){
@@ -253,8 +266,8 @@
             $('#endTime').css("border-color", "red");
             valid=false;
         }
-        if ( $('#placeOrCause').val()==''){
-            $('#placeOrCause').css("border-color", "red");
+        if ( $('#placeCause').val()==''){
+            $('#placeCause').css("border-color", "red");
             valid=false;
         }
         setTimeout(setDefaultColorInputs,1000)
@@ -265,21 +278,18 @@
         $('#dateOfAbsence').css("border-color", "");
         $('#startTime').css("border-color", "");
         $('#endTime').css("border-color", "");
-        $('#placeOrCause').css("border-color", "");
+        $('#placeCause').css("border-color", "");
     }
 
-     $(document).ready(function(){
-         $("#search").keyup(function(){
-             _this = this;
-
-             $.each($("#entryTable tbody tr"), function() {
-                 if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) === -1) {
-                     $(this).hide();
-                 } else {
-                     $(this).show();
-                 }});
-         });
-     });
-    loadTableData();
+    $("#search").keyup(function(){
+        loadTableData(0);
+    });
+    $('#startDate').change(function() {
+        loadTableData(0);
+    });
+    $('#endDate').change(function() {
+        loadTableData(0);
+    });
+    loadTableData(0);
 </script>
 </html>
