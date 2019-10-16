@@ -12,7 +12,7 @@ import java.util.List;
 
 
 public interface EntryRepository extends PagingAndSortingRepository<Entry, Long> {
-    Page<Entry> findAllByDateOfAbsenceBetweenAndFioContainingOrPlaceCauseContaining(String startDate, String endDate,String fio,String place, Pageable pageable);
+    Page<Entry> findAllByDateOfAbsenceBetweenAndFioContainingOrDateOfAbsenceBetweenAndPlaceCauseContaining(String startDate, String endDate,String fio,String startDate2, String endDate2, String place, Pageable pageable);
 
 
 }

@@ -39,7 +39,7 @@ public class EntryServiceImpl implements EntryService {
         Sort sort = new Sort(Sort.Direction.ASC, "idEntry");
         Pageable pageable = PageRequest.of(page, 10,sort);
 
-         entries = entryRepository.findAllByDateOfAbsenceBetweenAndFioContainingOrPlaceCauseContaining(startDate,endDate,searchText,searchText,pageable);
+         entries = entryRepository.findAllByDateOfAbsenceBetweenAndFioContainingOrDateOfAbsenceBetweenAndPlaceCauseContaining(startDate,endDate,searchText,startDate,endDate,searchText,pageable);
 
         String jsonEntry = null;
         try {
