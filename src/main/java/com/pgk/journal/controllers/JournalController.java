@@ -17,7 +17,7 @@ public class JournalController {
     @Autowired
     private EntryService entryService;
 
-    @GetMapping
+    @RequestMapping(path = "/")
     public String allEntry() {
         return "journal";
     }
