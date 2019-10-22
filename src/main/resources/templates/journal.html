@@ -102,7 +102,7 @@
             <tr>
                 <th scope="col">№</th>
                 <th scope="col">ФИО работника</th>
-                <th scope="col">&nbsp&nbsp&nbsp&nbsp&nbsp&nbspДата&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+                <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Дата&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th scope="col">Время выезда</th>
                 <th scope="col">Время возвращения</th>
                 <th scope="col">Место командирования</th>
@@ -145,16 +145,15 @@
     </div>
 </div>
 <script>
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var today = new Date(Date.now());
+    var dd = String(today.getDate());
+    var mm = String(today.getMonth()+1);
     var yyyy = today.getFullYear();
+
     firstDayOfMonth = yyyy+'-'+mm+'-01';
     currentDayOfMonth = yyyy+'-'+mm+'-'+dd;
     $('#startDate').val(firstDayOfMonth);
     $('#endDate').val(currentDayOfMonth);
-
-
 
      function showSaveModal(isNew) {
          if (isNew){
@@ -327,7 +326,7 @@
     }
     function changeTime(){
         if ($('#endTime').val()!=''&&$('#endTime').val()<$('#startTime').val()){
-            $('#endTime').val($('#startTime').val())
+            $('#endTime').val($('#startTime').val());
         }
     }
 
