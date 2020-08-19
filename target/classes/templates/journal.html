@@ -9,6 +9,7 @@
     <script  src="/js/jquery.min.js" type="text/javascript"></script>
     <script  src="/js/popper.min.js" type="text/javascript" ></script>
     <script  src="/js/bootstrap.min.js" type="text/javascript" ></script>
+
     <!--datepicker-->
     <link rel="stylesheet" type="text/css" href="/css/jquery.datetimepicker.css">
     <script  src="/js/jquery.datetimepicker.full.min.js" type="text/javascript"></script>
@@ -45,11 +46,18 @@
             color: #960430;
             outline-color:#960430;
         }
+
     </style>
 </head>
 
 <body>
-<div style="width: 100%; background: #960430">
+<div class="container-fluid" style="background: #960430">
+    <div class="navbar navbar-expand-lg float-left" style="height: 100%;">
+        <img src="img/usr.png"> <span class="btn" style="color: white" name="usrName"  id="usrName" th:text="${username}"></span>
+    </div>
+    <div class=" navbar navbar-expand-lg float-right" style="height: 100%;">
+        <button class="btn btn-outline-light" onclick="logout()">выйти</button>
+    </div>
     <div class="container">
         <nav class="navbar navbar-expand-lg">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -79,12 +87,19 @@
                         </div>
                     </li>
                 </ul>
+
+
+
+
                 <div  class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" style="outline: none; " type="search" id="search" placeholder="Поиск" aria-label="Search">
                 </div>
+
+
             </div>
         </nav>
     </div>
+
 </div>
 <div class="container">
     <br>
@@ -100,7 +115,7 @@
     <table id="entryTable" class="table table-hover">
         <thead >
             <tr>
-                <th scope="col">№</th>
+                <th scope="col"><p onclick="sortByAscDesc()"><img src="img/icons8.png"></p></th>
                 <th scope="col">ФИО работника</th>
                 <th scope="col">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Дата&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                 <th scope="col">Время выезда</th>
@@ -129,7 +144,7 @@
                 </button>
             </div>
                 <div class="modal-body">
-                    <input style="width: 30%" type="text" id=fio placeholder="ФИО" maxlength="100">
+                    <input style="width: 30%" type="text" id=fio placeholder="ФИО" maxlength="100" readonly>
                     <input style="width: 10%" type="text" id="dateOfAbsence" placeholder="дата" readonly class="dateTimePicker">
                     <input style="width: 8%" type="text" id="startTime" value="" placeholder="с" onchange="changeTime();" readonly>
                     <input style="width: 8%" type="text" id="endTime" value="" placeholder="до" onchange="changeTime()" readonly>
@@ -143,12 +158,14 @@
                 </div>
         </div>
     </div>
+
 </div>
 <script>
     var today = new Date(Date.now());
     var dd = String(today.getDate());
     var mm = String(today.getMonth()+1);
     var yyyy = today.getFullYear();
+    var sortAsc=false;
 
     firstDayOfMonth = yyyy+'-'+mm+'-01';
     currentDayOfMonth = yyyy+'-'+mm+'-'+dd;
@@ -192,7 +209,8 @@
             $('#dateOfAbsence').val(dateOfAbsence);
             $('#startTime').val(startTime);
             $('#endTime').val(endTime);
-            $('#placeCause').val(placeCause);
+            console.log(placeCause.replace(new RegExp("quotes",'g'),''));
+            $('#placeCause').val(placeCause.replace(new RegExp("quotes",'g'),'"'));
             showSaveModal(false);
     }
      function deleteEntry() {
@@ -207,6 +225,14 @@
                  closeSaveModal();
              }
          );
+     }
+     function sortByAscDesc(){
+         if (sortAsc==true){
+             sortAsc=false;
+         } else {
+             sortAsc=true;
+         }
+         loadTableData(0);
      }
 
     $('#startTime').clockpicker({
@@ -232,23 +258,28 @@
             $('#endDate').val($('#startDate').val())
         }
 
-
         $.post(
             "/loadEntry",
             {
                 searchText: $('#search').val(),
                 startDate: $('#startDate').val(),
                 endDate: $('#endDate').val(),
-                page: page
+                page: page,
+                sortAsc: sortAsc
             },
             function (jsonData) {
                 var entryList= JSON.parse(jsonData);
                 var entryHtml="";
                 var navPagesHtml="";
-                var num=1+(entryList.number*10);
+                var num;
+                if (!sortAsc){
+                    num=entryList.totalElements-10*(entryList.number)
+                } else                 {
+                    num=1+(entryList.number*10);
+                }
                 entryList.content.forEach(function (entry) {
                     entryHtml+=
-                        '<tr ondblclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeCause+'\')">'+
+                        '<tr ondblclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeCause.replace(/["']/g,"quotes")+'\')">'+
                             '<td>'+num+'</td>'+
                             '<td>'+entry.fio+'</td>'+
                             '<td>'+entry.dateOfAbsence+'</td>'+
@@ -256,7 +287,12 @@
                             '<td>'+entry.endTime+'</td>'+
                             '<td>'+entry.placeCause+'</td>'+
                         '</tr>';
-                    num++;
+                    if (!sortAsc) {
+                        num--;
+                    }else {
+                        num++;
+                    }
+
                 });
                 $('#entryTable tbody').html(entryHtml);
                 var hideNav = entryList.totalPages==0?'hidden':'';
@@ -284,8 +320,9 @@
         );
     }
     function clearEntryModal() {
+        console.log(document.getElementById('usrName').textContent);
         $('#idEntry').val('');
-        $('#fio').val('');
+        $('#fio').val(document.getElementById('usrName').textContent);
         $('#dateOfAbsence').val(currentDayOfMonth);
         $('#startTime').val('');
         $('#endTime').val('');
@@ -328,6 +365,14 @@
         if ($('#endTime').val()!=''&&$('#endTime').val()<$('#startTime').val()){
             $('#endTime').val($('#startTime').val());
         }
+    }
+    function logout(){
+        $.get(
+            "/logout",
+            function () {
+                location.reload();
+            }
+        );
     }
 
     $("#search").keyup(function(){
