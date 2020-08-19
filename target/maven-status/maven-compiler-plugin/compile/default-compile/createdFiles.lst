@@ -1,0 +1,9 @@
+com/pgk/journal/controllers/JournalController.class
+com/pgk/journal/ActiveDirectoryLdapAuthoritiesPopulator.class
+com/pgk/journal/service/EntryServiceImpl.class
+com/pgk/journal/Application.class
+com/pgk/journal/MvcConfig.class
+com/pgk/journal/service/EntryService.class
+com/pgk/journal/WebSecurityConfig.class
+com/pgk/journal/entity/Entry.class
+com/pgk/journal/repository/EntryRepository.class
