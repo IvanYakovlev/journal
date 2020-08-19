@@ -1,9 +1,0 @@
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/entity/Entry.java
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/service/EntryServiceImpl.java
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/WebSecurityConfig.java
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/repository/EntryRepository.java
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/service/EntryService.java
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/controllers/JournalController.java
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/Application.java
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/MvcConfig.java
-/home/yakovlevin/workspace/journal/src/main/java/com/pgk/journal/ActiveDirectoryLdapAuthoritiesPopulator.java
