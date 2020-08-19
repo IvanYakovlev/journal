@@ -1,15 +1,14 @@
 package com.pgk.journal.controllers;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pgk.journal.entity.Entry;
-import com.pgk.journal.repository.EntryRepository;
 import com.pgk.journal.service.EntryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class JournalController {
@@ -17,8 +16,22 @@ public class JournalController {
     @Autowired
     private EntryService entryService;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @RequestMapping(path = "/")
-    public String allEntry() {
+    public String allEntry(Model model) {
+
+        LdapUserDetailsImpl ldapDetails = (LdapUserDetailsImpl) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+        String dn = ldapDetails.getDn();
+        int beginIndex = dn.indexOf("cn=") + 4;
+        int endIndex = dn.indexOf(",");
+        String username = dn.substring(beginIndex, endIndex);
+
+        model.addAttribute("username",username);
+
+
         return "journal";
     }
 
@@ -43,9 +56,17 @@ public class JournalController {
     public @ResponseBody String loadEntry (@RequestParam String searchText,
                                            @RequestParam String startDate,
                                            @RequestParam String endDate,
-                                           @RequestParam Integer page){
-        return entryService.getJsonEntryList(searchText,startDate,endDate, page==null?0:page);
+                                           @RequestParam Integer page,
+                                           @RequestParam Boolean sortAsc){
+        return entryService.getJsonEntryList(searchText,startDate,endDate, page==null?0:page,sortAsc);
     }
 
-
+    @RequestMapping("/login")
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        Model model) {
+        model.addAttribute("error", error!=null);
+        model.addAttribute("logout", logout!=null);
+        return "login";
+    }
 }

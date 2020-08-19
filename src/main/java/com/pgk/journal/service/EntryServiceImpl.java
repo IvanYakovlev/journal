@@ -31,15 +31,18 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public String getJsonEntryList(String searchText, String startDate, String endDate, Integer page) {
+    public String getJsonEntryList(String searchText, String startDate, String endDate, Integer page, Boolean sortAsc) {
         ObjectMapper mapper = new ObjectMapper();
         Iterable<Entry> entries = null;
 
 
         Sort sort = new Sort(Sort.Direction.ASC, "idEntry");
         Pageable pageable = PageRequest.of(page, 10,sort);
-
-         entries = entryRepository.findAllByDateOfAbsenceBetweenAndFioContainingOrDateOfAbsenceBetweenAndPlaceCauseContaining(startDate,endDate,searchText,startDate,endDate,searchText,pageable);
+        if (!sortAsc){
+            entries = entryRepository.findAllByDateOfAbsenceBetweenAndFioContainingOrDateOfAbsenceBetweenAndPlaceCauseContainingOrderByIdEntryDesc(startDate,endDate,searchText,startDate,endDate,searchText,pageable);
+        } else {
+            entries = entryRepository.findAllByDateOfAbsenceBetweenAndFioContainingOrDateOfAbsenceBetweenAndPlaceCauseContainingOrderByIdEntryAsc(startDate,endDate,searchText,startDate,endDate,searchText,pageable);
+        }
 
         String jsonEntry = null;
         try {
