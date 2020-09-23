@@ -121,6 +121,7 @@
                 <th scope="col">Время выезда</th>
                 <th scope="col">Время возвращения</th>
                 <th scope="col">Место командирования</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody id="tBodyData">
@@ -162,15 +163,18 @@
 </div>
 <script>
     var today = new Date(Date.now());
-    var dd = String(today.getDate());
-    var mm = String(today.getMonth()+1);
+    var dd = String(("0"+today.getDate()).slice(-2));
+    var ddLast = String(("0"+new Date(today.getFullYear(), today.getMonth()+1, 0).getDate()).slice(-2));
+    var mm = String(("0" + (today.getMonth()+1)).slice(-2));
     var yyyy = today.getFullYear();
     var sortAsc=false;
 
     firstDayOfMonth = yyyy+'-'+mm+'-01';
     currentDayOfMonth = yyyy+'-'+mm+'-'+dd;
+    lastDayOfMonth = yyyy+'-'+mm+'-'+ddLast;
+
     $('#startDate').val(firstDayOfMonth);
-    $('#endDate').val(currentDayOfMonth);
+    $('#endDate').val(lastDayOfMonth);
 
      function showSaveModal(isNew) {
          if (isNew){
@@ -279,13 +283,14 @@
                 }
                 entryList.content.forEach(function (entry) {
                     entryHtml+=
-                        '<tr ondblclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeCause.replace(/["']/g,"quotes")+'\')">'+
+                        '<tr>'+
                             '<td>'+num+'</td>'+
                             '<td>'+entry.fio+'</td>'+
                             '<td>'+entry.dateOfAbsence+'</td>'+
                             '<td>'+entry.startTime+'</td>'+
                             '<td>'+entry.endTime+'</td>'+
                             '<td>'+entry.placeCause+'</td>'+
+                            '<td><img src="img/edit.png" onclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeCause.replace(/["']/g,"quotes")+'\')" title="Редактировать/Удалить"></td>'+
                         '</tr>';
                     if (!sortAsc) {
                         num--;
@@ -363,6 +368,8 @@
     }
     function changeTime(){
         if ($('#endTime').val()!=''&&$('#endTime').val()<$('#startTime').val()){
+            console.log($('#startTime').val());
+            console.log($('#endTime').val());
             $('#endTime').val($('#startTime').val());
         }
     }
