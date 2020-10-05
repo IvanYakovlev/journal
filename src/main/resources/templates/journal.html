@@ -275,6 +275,7 @@
                 var entryList= JSON.parse(jsonData);
                 var entryHtml="";
                 var navPagesHtml="";
+                var userName= document.getElementById('usrName').textContent;
                 var num;
                 if (!sortAsc){
                     num=entryList.totalElements-10*(entryList.number)
@@ -289,9 +290,14 @@
                             '<td>'+entry.dateOfAbsence+'</td>'+
                             '<td>'+entry.startTime+'</td>'+
                             '<td>'+entry.endTime+'</td>'+
-                            '<td>'+entry.placeCause+'</td>'+
-                            '<td><img src="img/edit.png" onclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeCause.replace(/["']/g,"quotes")+'\')" title="Редактировать/Удалить"></td>'+
-                        '</tr>';
+                            '<td>'+entry.placeCause+'</td>';
+                    if (entry.fio==userName){
+                        entryHtml+= '<td><img src="img/edit.png" onclick="editEntry(\''+entry.idEntry+'\',\''+entry.fio+'\',\''+entry.dateOfAbsence+'\',\''+entry.startTime+'\',\''+entry.endTime+'\',\''+entry.placeCause.replace(/["']/g,"quotes")+'\')" title="Редактировать/Удалить"></td>';
+                    } else {
+                        entryHtml+='<td></td>';
+                    }
+                    entryHtml+='</tr>';
+
                     if (!sortAsc) {
                         num--;
                     }else {
