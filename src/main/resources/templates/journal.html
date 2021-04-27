@@ -46,7 +46,22 @@
             color: #960430;
             outline-color:#960430;
         }
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #960430; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            animation: spin 2s linear infinite;
+        }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 
@@ -133,8 +148,8 @@
         </ul>
     </nav>
 </div>
+<div height="100%" width="100%" align="center" class="loader" id="loader" tabindex="-100" role="dialog" z-index="999999" ></div>
 </body>
-
 <div class="modal fade" id="modalSave" tabindex="-1" role="dialog" aria-labelledby="modalSaveTitle" aria-hidden="true" >
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content" >
@@ -161,6 +176,7 @@
     </div>
 
 </div>
+
 <script>
     var today = new Date(Date.now());
     var dd = String(("0"+today.getDate()).slice(-2));
@@ -190,6 +206,8 @@
     }
     function saveEntry() {
          if (validate()) {
+             $('#loader').modal('show');
+             closeSaveModal();
              $.post(
                  "/saveEntry",
                  {
@@ -202,7 +220,7 @@
                  },
                  function () {
                      loadTableData(0);
-                     closeSaveModal();
+                     $('#loader').modal('hide');
                  }
              );
          }
@@ -218,7 +236,8 @@
             showSaveModal(false);
     }
      function deleteEntry() {
-
+         $('#loader').modal('show');
+         closeSaveModal();
          $.post(
              "/deleteEntry",
              {
@@ -226,7 +245,7 @@
              },
              function () {
                  loadTableData(0);
-                 closeSaveModal();
+                 $('#loader').modal('hide');
              }
          );
      }
@@ -258,10 +277,10 @@
     $.datetimepicker.setLocale('ru');
 
     function loadTableData(page) {
+
         if ($('#endDate').val()<$('#startDate').val()){
             $('#endDate').val($('#startDate').val())
         }
-
         $.post(
             "/loadEntry",
             {
@@ -329,6 +348,7 @@
                 $('#navPages').html(navPagesHtml);
             }
         );
+
     }
     function clearEntryModal() {
         console.log(document.getElementById('usrName').textContent);
@@ -398,5 +418,6 @@
         loadTableData(0);
     });
     loadTableData(0);
+
 </script>
 </html>
